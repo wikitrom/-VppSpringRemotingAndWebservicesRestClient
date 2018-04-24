@@ -1,17 +1,19 @@
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class Customer {
+@XmlRootElement(name="customer")
+public class CustomerClientVersion {
 
-	private String companyName;
+	@XmlElement(name="companyName")
+	private String name;
 	private String customerId;
 	private String notes;
 	
 	public String getCompanyName() {
-		return companyName;
+		return name;
 	}
 	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+		this.name = companyName;
 	}
 	public String getCustomerId() {
 		return customerId;

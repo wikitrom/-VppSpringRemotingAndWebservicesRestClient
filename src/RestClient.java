@@ -11,7 +11,7 @@ public class RestClient {
 		System.out.println(response);
 		System.out.println();
 
-		Customer customer = template.getForObject("http://localhost:8080/mywebapp/customer/CS03939", Customer.class);
+		CustomerClientVersion customer = template.getForObject("http://localhost:8080/mywebapp/customer/CS03939", CustomerClientVersion.class);
 
 		System.out.println("Customer : " + customer.getCompanyName() + " (id: " + customer.getCustomerId()
 				+ ")\nNotes: " + customer.getNotes());
