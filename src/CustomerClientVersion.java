@@ -1,3 +1,5 @@
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -8,6 +10,9 @@ public class CustomerClientVersion {
 	private String name;
 	private String customerId;
 	private String notes;
+	private String email;
+	private String telephone;
+	private List<CallClientVersion> calls;
 	
 	public String getCompanyName() {
 		return name;
