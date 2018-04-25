@@ -6,6 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class RestClient {
@@ -24,17 +25,16 @@ public class RestClient {
 
 		// getForObject can not be used if we want to provide specific http-headers
 		HttpEntity requestEntity = new HttpEntity(headers);
-		HttpEntity response = template.exchange(myURL, HttpMethod.GET, requestEntity, String.class);
 
-		System.out.println(response);
-		System.out.println();
-		System.out.println(response.getBody());
-		System.out.println();
-
-		CustomerClientVersion customer = template.getForObject(myURL, CustomerClientVersion.class);
-
-		System.out.println("Customer : " + customer.getCompanyName() + " (id: " + customer.getCustomerId()
-				+ ")\nNotes: " + customer.getNotes());
+		try {
+			HttpEntity response = template.exchange(myURL, HttpMethod.GET, requestEntity, String.class);
+			System.out.println();
+			System.out.println(response);
+			System.out.println();
+			System.out.println(response.getBody());
+		} catch (HttpClientErrorException e) {        // catch all http 4xx errror codes
+			System.out.println("Customer not found");
+		}
 
 	}
 }
