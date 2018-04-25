@@ -15,8 +15,9 @@ public class RestClient {
 	public static void main(String[] args) throws IOException {
 
 		String myURL = "http://localhost:8080/mywebapp/customer/CS03939cc";
+		
 		RestTemplate template = new RestTemplate();
-		template.setErrorHandler(new CustomExceptionHandler());
+		template.setErrorHandler(new CustomExceptionHandler(template));
 
 		List<MediaType> acceptedMediaTypes = new ArrayList<MediaType>();
 		acceptedMediaTypes.add(MediaType.IMAGE_JPEG);
@@ -34,7 +35,8 @@ public class RestClient {
 			System.out.println("Successfully found customer: " + response.getBody());
 
 		} catch (ResourceNotFoundException e) { // HTTP 404
-			System.out.println("Customer not found");
+			System.out.println("Customer not found: ");
+			System.out.println("Message returned was: " + e.getErrorObject().getUri() + " " + e.getErrorObject().getMessage());
 		}
 	}
 
