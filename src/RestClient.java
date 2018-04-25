@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +14,7 @@ public class RestClient {
 
 	public static void main(String[] args) throws IOException {
 
-		String myURL = "http://localhost:8080/mywebapp/customer/CS03939";
+		String myURL = "http://localhost:8080/mywebapp/customer/CS03939cc";
 		RestTemplate template = new RestTemplate();
 
 		List<MediaType> acceptedMediaTypes = new ArrayList<MediaType>();
@@ -32,8 +33,12 @@ public class RestClient {
 			System.out.println(response);
 			System.out.println();
 			System.out.println(response.getBody());
-		} catch (HttpClientErrorException e) {        // catch all http 4xx errror codes
+		} catch (HttpClientErrorException e) {        // catch all http 4xx error codes
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
 			System.out.println("Customer not found");
+			} else {
+				 System.out.println("Other errror occured (HTTP: " + e.getStatusCode() + ")");
+			}
 		}
 
 	}
