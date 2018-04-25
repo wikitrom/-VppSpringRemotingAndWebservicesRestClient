@@ -16,11 +16,12 @@ public class RestClient {
 
 		String myURL = "http://localhost:8080/mywebapp/customer/CS03939cc";
 		RestTemplate template = new RestTemplate();
+		template.setErrorHandler(new CustomExceptionHandler());
 
 		List<MediaType> acceptedMediaTypes = new ArrayList<MediaType>();
 		acceptedMediaTypes.add(MediaType.IMAGE_JPEG);
-		// acceptedMediaTypes.add(MediaType.APPLICATION_XML);
-		acceptedMediaTypes.add(MediaType.APPLICATION_JSON);
+		acceptedMediaTypes.add(MediaType.APPLICATION_XML);
+		// acceptedMediaTypes.add(MediaType.APPLICATION_JSON);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(acceptedMediaTypes);
 
@@ -29,17 +30,12 @@ public class RestClient {
 
 		try {
 			HttpEntity response = template.exchange(myURL, HttpMethod.GET, requestEntity, String.class);
-			System.out.println();
-			System.out.println(response);
-			System.out.println();
-			System.out.println(response.getBody());
-		} catch (HttpClientErrorException e) {        // catch all http 4xx error codes
-			if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-			System.out.println("Customer not found");
-			} else {
-				 System.out.println("Other errror occured (HTTP: " + e.getStatusCode() + ")");
-			}
-		}
+			// System.out.println(response);
+			System.out.println("Successfully found customer: " + response.getBody());
 
+		} catch (ResourceNotFoundException e) { // HTTP 404
+			System.out.println("Customer not found");
+		}
 	}
+
 }
