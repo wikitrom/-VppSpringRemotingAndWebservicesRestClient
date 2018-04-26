@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,15 +29,17 @@ public class RestClient {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(acceptedMediaTypes);
 
-
 		// Add a new customer
 		CustomerClientVersion newCustomer = new CustomerClientVersion();
-		newCustomer.setCompanyName("Avalon");
-		newCustomer.setNotes("Just another test company");
-		
-		newCustomer = template.postForObject(myPostURI, newCustomer, CustomerClientVersion.class);
+		newCustomer.setCompanyName("Accenture");
+		newCustomer.setNotes("Another consultant company");
+
+		ResponseEntity<CustomerClientVersion> customerEntity = template.postForEntity(myPostURI, newCustomer,
+				CustomerClientVersion.class);
+		newCustomer = customerEntity.getBody();
+
 		System.out.println("The new customer has been given an ID of: " + newCustomer.getCustomerId());
-		
+
 		// get all customers
 		// getForObject can not be used if we want to provide specific http-headers
 		HttpEntity requestEntity = new HttpEntity(headers);
