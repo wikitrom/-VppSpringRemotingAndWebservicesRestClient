@@ -16,6 +16,7 @@ public class RestClient {
 
 		String myURI = "http://localhost:8080/mywebapp/customer/CS03939";
 		String myCollectionURI = "http://localhost:8080/mywebapp/customers";
+		String myPostURI = "http://localhost:8080/mywebapp/customers";
 
 		RestTemplate template = new RestTemplate();
 		template.setErrorHandler(new CustomExceptionHandler(template));
@@ -27,6 +28,16 @@ public class RestClient {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(acceptedMediaTypes);
 
+
+		// Add a new customer
+		CustomerClientVersion newCustomer = new CustomerClientVersion();
+		newCustomer.setCompanyName("Avalon");
+		newCustomer.setNotes("Just another test company");
+		
+		newCustomer = template.postForObject(myPostURI, newCustomer, CustomerClientVersion.class);
+		System.out.println("The new customer has been given an ID of: " + newCustomer.getCustomerId());
+		
+		// get all customers
 		// getForObject can not be used if we want to provide specific http-headers
 		HttpEntity requestEntity = new HttpEntity(headers);
 
