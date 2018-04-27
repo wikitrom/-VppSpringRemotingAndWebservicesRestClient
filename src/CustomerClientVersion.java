@@ -42,6 +42,6 @@ public class CustomerClientVersion {
 	}
 
 	public String toString() {
-		return customerId;
+		return "id: " + customerId + " customer: " + name;
 	}
 }
