@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.net.URI;
 
+import org.springframework.hateoas.Link;
 import org.springframework.web.client.RestTemplate;
 
 public class RestClient {
@@ -15,15 +16,10 @@ public class RestClient {
 //		template.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 		template.setErrorHandler(new CustomExceptionHandler(template));
 
-		CustomerClientVersion customer = new CustomerClientVersion();
-		customer.setCompanyName("Apple");
-		customer.setNotes("almost as bad ad MS");
+		CustomerCollectionRepresentation allCustomers = template.getForObject(collectionURI + "?first=1&last=2", CustomerCollectionRepresentation.class);
 		
-		URI finalLocation =  template.postForLocation(collectionURI, customer);
-//		System.out.println(finalLocation);
-		
-		CustomerClientVersion foundCustomer = template.getForObject(finalLocation, CustomerClientVersion.class);
-		System.out.println(foundCustomer);
+		Link link = allCustomers.getLink("next");
+		System.out.println("Next page link: " + link.getHref());
 		
 	}
 
